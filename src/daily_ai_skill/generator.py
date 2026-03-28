@@ -5,13 +5,21 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from .image_generation import ImageGenConfig, ImageGenerator
 from .models import DailyReport, ReportItem
 from .sources import ARXIV_RSS, HF_BLOG_RSS, SourceClient
 
 
 class DailyReportGenerator:
-    def __init__(self, template_dir: str = "templates") -> None:
+    def __init__(
+        self,
+        template_dir: str = "templates",
+        image_config: ImageGenConfig | None = None,
+        max_images: int = 6,
+    ) -> None:
         self.client = SourceClient()
+        self.image_generator = ImageGenerator(image_config or ImageGenConfig())
+        self.max_images = max_images
         self.env = Environment(
             loader=FileSystemLoader(template_dir),
             autoescape=select_autoescape(disabled_extensions=("md",)),
@@ -27,6 +35,7 @@ class DailyReportGenerator:
         news_items = self.client.fetch_rss_items(HF_BLOG_RSS, "Hugging Face", limit=6)
         paper_items = self.client.fetch_rss_items(ARXIV_RSS, "arXiv cs.AI", limit=6)
 
+        self._attach_images(date_str, repo_items, news_items, paper_items)
         highlights = self._make_highlights(news_items, repo_items, paper_items)
 
         return DailyReport(
@@ -49,6 +58,7 @@ class DailyReportGenerator:
 
     def close(self) -> None:
         self.client.close()
+        self.image_generator.close()
 
     @staticmethod
     def _make_highlights(
@@ -67,3 +77,16 @@ class DailyReportGenerator:
         if paper_items:
             highlights.append(f"研究焦点：{paper_items[0].title}")
         return highlights
+
+    def _attach_images(
+        self,
+        date_str: str,
+        repo_items: list[ReportItem],
+        news_items: list[ReportItem],
+        paper_items: list[ReportItem],
+    ) -> None:
+        pool = [*repo_items, *news_items, *paper_items]
+        for idx, item in enumerate(pool[: self.max_images], start=1):
+            prompt = f"标题：{item.title}。摘要：{item.summary}。来源：{item.source}。"
+            filename = f"{date_str}-{idx}-{item.source}-{item.title}"
+            item.image_path = self.image_generator.generate(prompt, filename_stem=filename)

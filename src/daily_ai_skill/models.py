@@ -12,6 +12,7 @@ class ReportItem:
     source: str
     published: datetime | None = None
     score: int | None = None
+    image_path: str | None = None
 
 
 @dataclass(slots=True)
