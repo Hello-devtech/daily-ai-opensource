@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "daily-ai-skill"
+version = "0.1.0"
+description = "Python skill project for generating a daily AI report"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Daily AI Open Source"}]
+dependencies = [
+  "httpx>=0.27.0",
+  "feedparser>=6.0.11",
+  "jinja2>=3.1.4",
+  "python-dateutil>=2.9.0",
+  "tenacity>=9.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+]
+
+[project.scripts]
+daily-ai-report = "daily_ai_skill.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-q"
