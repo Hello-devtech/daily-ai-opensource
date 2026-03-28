@@ -24,6 +24,25 @@ This repository tracks **daily trending AI open source projects** from **GitHub*
   - Link: https://github.com/owner/repo
 ```
 
+### Daily Report Delivery Channels
+- Supports multi-channel daily report delivery.
+- Configure channels during skill installation.
+- Supported channels: **Feishu**, **iMessage**, **OpenClaw**.
+
+### Skill Installation Channel Configuration
+Use a channel list in your install configuration:
+
+```yaml
+report_delivery:
+  enabled: true
+  channels:
+    - feishu
+    - imessage
+    - openclaw
+```
+
+You can enable one or multiple channels based on your environment.
+
 ### Sample Entry (2026-03-23)
 - Date: 2026-03-23
   - Project: OpenVision-Lite
@@ -91,6 +110,25 @@ This repository tracks **daily trending AI open source projects** from **GitHub*
   - 简介: 一句话描述
   - 链接: https://github.com/owner/repo
 ```
+
+### 日报发送通道
+- 支持多通道日报发送。
+- 在安装 skill 时配置发送通道。
+- 已支持通道：**飞书**、**iMessage**、**OpenClaw**。
+
+### 安装 Skill 时的通道配置
+可在安装配置中声明通道列表：
+
+```yaml
+report_delivery:
+  enabled: true
+  channels:
+    - feishu
+    - imessage
+    - openclaw
+```
+
+可根据部署环境启用一个或多个通道。
 
 ### 示例条目（2026-03-23）
 - 日期: 2026-03-23
