@@ -76,15 +76,83 @@ daily-ai-report \
   --image-endpoint /v1/images/generations \
   --image-api-key-env CUSTOM_IMAGE_KEY \
   --output reports/daily_custom_images.md
+=======
+### Daily Report Delivery Channels
+- Supports multi-channel daily report delivery.
+- Configure channels during skill installation.
+- Supported channels: **Feishu**, **iMessage**, **OpenClaw**.
+
+### Skill Installation Channel Configuration
+Use a channel list in your install configuration:
+
+```yaml
+report_delivery:
+  enabled: true
+  channels:
+    - feishu
+    - imessage
+    - openclaw
 ```
 
-## 测试
+You can enable one or multiple channels based on your environment.
 
-```bash
-pytest
-```
+### Sample Entry (2026-03-23)
+- Date: 2026-03-23
+  - Project: OpenVision-Lite
+  - Stars: 12,345
+  - Description: Lightweight multimodal model for vision-language tasks.
+  - Link: https://github.com/example/openvision-lite
 
-## 后续建议（可选）
-- 增加 LLM 文本摘要层（对聚合内容做 3~5 条中文摘要）。
-- 增加去重与评分机制（关键词、来源权重、热度）。
-- 接入定时任务（GitHub Actions / cron）实现每日自动提交。
+### Trusted AI Information Sources
+
+#### Research & Papers
+- [arXiv](https://arxiv.org) - Open-access archive for scholarly articles in AI/ML
+- [Papers With Code](https://paperswithcode.com) - ML papers with code, datasets, and benchmarks
+- [Hugging Face](https://huggingface.co) - Open-source AI models, datasets, and demos
+- [Semantic Scholar](https://www.semanticscholar.org) - AI-powered research literature search
+
+#### Labs & Research Blogs
+- [OpenAI Blog](https://openai.com/blog) - Research and announcements from OpenAI
+- [Google DeepMind](https://deepmind.google/research) - DeepMind research publications
+- [Meta AI](https://ai.meta.com/blog) - Meta AI research blog
+- [Anthropic Research](https://www.anthropic.com/research) - Anthropic AI safety research
+- [Microsoft Research AI](https://www.microsoft.com/en-us/research/research-area/artificial-intelligence/) - Microsoft AI research
+
+#### News & Media
+- [The Verge - AI](https://www.theverge.com/ai-artificial-intelligence) - AI coverage from The Verge
+- [TechCrunch - AI](https://techcrunch.com/category/artificial-intelligence/) - AI startup and industry news
+- [VentureBeat - AI](https://venturebeat.com/ai/) - Enterprise AI news and analysis
+- [MIT Technology Review - AI](https://www.technologyreview.com/topic/artificial-intelligence/) - In-depth AI reporting
+
+#### Newsletters & Aggregators
+- [Import AI](https://importai.net) - Weekly AI newsletter by Jack Clark
+- [The Rundown AI](https://www.therundown.ai) - Daily AI news digest
+- [Ben's Bites](https://bensbites.co) - Daily AI product and research roundup
+- [TLDR AI](https://tldr.tech/ai) - Concise daily AI newsletter
+
+#### Community
+- [r/MachineLearning](https://www.reddit.com/r/MachineLearning/) - Reddit ML community
+- [Hacker News](https://news.ycombinator.com) - Tech community with strong AI discussion
+- [GitHub Trending](https://github.com/trending) - Trending open source projects
+
+### How to Contribute
+1. Fork this repository.
+2. Add a new entry in the latest daily section following the format.
+3. Submit a pull request with a clear summary.
+
+---
+
+## 中文
+
+### 说明
+本仓库用于记录来自 **GitHub**、**Hugging Face** 和 **Papers with Code** 的 **每日热门 AI 开源项目**，以结构化的方式快速呈现当天值得关注的项目。
+
+### 分类
+- LLM（大语言模型）
+- Computer Vision（计算机视觉）
+- NLP（自然语言处理）
+- MLOps
+- AI Agents（智能体）
+- Multimodal（多模态）
+
+### 每日更新格式
