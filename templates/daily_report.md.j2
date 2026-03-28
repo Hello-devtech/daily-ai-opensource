@@ -1,0 +1,41 @@
+# 每日 AI 日报（{{ report.date_str }}）
+
+## 今日摘要
+{% for h in report.highlights %}
+- {{ h }}
+{% endfor %}
+
+## GitHub 热门开源（AI）
+{% for item in report.repo_items %}
+- **{{ item.title }}**{% if item.score is not none %}（⭐ {{ item.score }}）{% endif %}
+  - 简介：{{ item.summary }}
+  - 链接：{{ item.link }}
+  {% if item.image_path %}
+  - 配图：![{{ item.title }}]({{ item.image_path }})
+  {% endif %}
+{% endfor %}
+
+## 产业动态（Hugging Face Blog）
+{% for item in report.news_items %}
+- **{{ item.title }}**
+  - 摘要：{{ item.summary }}
+  - 链接：{{ item.link }}
+  {% if item.image_path %}
+  - 配图：![{{ item.title }}]({{ item.image_path }})
+  {% endif %}
+{% endfor %}
+
+## 研究进展（arXiv cs.AI）
+{% for item in report.paper_items %}
+- **{{ item.title }}**
+  - 摘要：{{ item.summary }}
+  - 链接：{{ item.link }}
+  {% if item.image_path %}
+  - 配图：![{{ item.title }}]({{ item.image_path }})
+  {% endif %}
+{% endfor %}
+
+## 使用说明
+- 本日报由 Python 脚本自动生成。
+- 默认基于 UTC 日期。
+- 使用 `--image-provider` 可切换图片大模型（OpenAI 或自定义端点）。

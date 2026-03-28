@@ -1,29 +1,82 @@
-# Daily AI Open Source
+# Daily AI Open Source (Skill Project)
 
-![Daily Update](https://img.shields.io/badge/update-daily-brightgreen) ![License](https://img.shields.io/badge/license-MIT-blue) ![Status](https://img.shields.io/badge/status-active-success)
+这是一个 **全 Python 实现** 的 skill 项目，用于自动生成“每日 AI 日报（含自动配图）”。
 
-## English
+## 项目目标
+每日聚合并输出：
+- GitHub 热门 AI 开源项目
+- Hugging Face Blog 最新动态
+- arXiv cs.AI 最新论文
+- 由图片生成大模型自动生成的配图
 
-### Description
-This repository tracks **daily trending AI open source projects** from **GitHub**, **Hugging Face**, and **Papers with Code**. It provides a concise, structured snapshot of what is popular and noteworthy each day.
+最终生成结构化 Markdown 日报，可直接发布。
 
-### Categories
-- LLM
-- Computer Vision
-- NLP
-- MLOps
-- AI Agents
-- Multimodal
+## 核心能力
+- **可插拔图片大模型**：支持 `openai` 与 `custom` 两种 provider。
+- **用户自定义模型**：通过 `--image-model` 指定模型名。
+- **用户自定义端点**：通过 `--image-api-base` + `--image-endpoint` 对接私有部署或第三方兼容接口。
+- **自动落盘图片**：日报中的配图会下载/保存到本地，并直接以 Markdown 图片语法嵌入。
 
-### Daily Update Format
+## 项目结构
+
+```text
+.
+├── SKILL.md
+├── pyproject.toml
+├── src/
+│   └── daily_ai_skill/
+│       ├── __init__.py
+│       ├── cli.py
+│       ├── generator.py
+│       ├── image_generation.py
+│       ├── models.py
+│       └── sources.py
+├── templates/
+│   └── daily_report.md.j2
+├── reports/
+└── tests/
+    └── test_generator.py
 ```
-- Date: YYYY-MM-DD
-  - Project: Project Name
-  - Stars: 1234
-  - Description: One-line summary
-  - Link: https://github.com/owner/repo
+
+## 安装
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .[dev]
 ```
 
+## 生成日报
+
+### 1) 仅生成文字日报
+
+```bash
+daily-ai-report --output reports/daily_ai_report.md
+```
+
+### 2) 接入 OpenAI 图片模型自动配图
+
+```bash
+export OPENAI_API_KEY=your_key
+daily-ai-report \
+  --image-provider openai \
+  --image-model gpt-image-1 \
+  --max-images 6 \
+  --output reports/daily_with_images.md
+```
+
+### 3) 接入用户自定义模型/服务（OpenAI 兼容接口）
+
+```bash
+export CUSTOM_IMAGE_KEY=your_key
+daily-ai-report \
+  --image-provider custom \
+  --image-model your-model-name \
+  --image-api-base https://your-image-gateway.example.com \
+  --image-endpoint /v1/images/generations \
+  --image-api-key-env CUSTOM_IMAGE_KEY \
+  --output reports/daily_custom_images.md
+=======
 ### Daily Report Delivery Channels
 - Supports multi-channel daily report delivery.
 - Configure channels during skill installation.
@@ -103,79 +156,3 @@ You can enable one or multiple channels based on your environment.
 - Multimodal（多模态）
 
 ### 每日更新格式
-```
-- 日期: YYYY-MM-DD
-  - 项目: 项目名称
-  - Stars: 1234
-  - 简介: 一句话描述
-  - 链接: https://github.com/owner/repo
-```
-
-### 日报发送通道
-- 支持多通道日报发送。
-- 在安装 skill 时配置发送通道。
-- 已支持通道：**飞书**、**iMessage**、**OpenClaw**。
-
-### 安装 Skill 时的通道配置
-可在安装配置中声明通道列表：
-
-```yaml
-report_delivery:
-  enabled: true
-  channels:
-    - feishu
-    - imessage
-    - openclaw
-```
-
-可根据部署环境启用一个或多个通道。
-
-### 示例条目（2026-03-23）
-- 日期: 2026-03-23
-  - 项目: OpenVision-Lite
-  - Stars: 12,345
-  - 简介: 轻量级多模态模型，适用于视觉-语言任务。
-  - 链接: https://github.com/example/openvision-lite
-
-### 可信 AI 信息源
-
-#### 研究与论文
-- [arXiv](https://arxiv.org) - AI/ML 学术论文开放获取平台
-- [Papers With Code](https://paperswithcode.com) - 机器学习论文、代码与基准测试
-- [Hugging Face](https://huggingface.co) - 开源 AI 模型、数据集与演示
-- [Semantic Scholar](https://www.semanticscholar.org) - AI 驱动的学术文献搜索引擎
-
-#### 实验室与研究博客
-- [OpenAI Blog](https://openai.com/blog) - OpenAI 研究与公告
-- [Google DeepMind](https://deepmind.google/research) - DeepMind 研究发表
-- [Meta AI](https://ai.meta.com/blog) - Meta AI 研究博客
-- [Anthropic Research](https://www.anthropic.com/research) - Anthropic AI 安全研究
-- [Microsoft Research AI](https://www.microsoft.com/en-us/research/research-area/artificial-intelligence/) - 微软 AI 研究
-
-#### 新闻与媒体
-- [The Verge - AI](https://www.theverge.com/ai-artificial-intelligence) - The Verge AI 报道
-- [TechCrunch - AI](https://techcrunch.com/category/artificial-intelligence/) - AI 创业与行业新闻
-- [VentureBeat - AI](https://venturebeat.com/ai/) - 企业 AI 新闻与分析
-- [MIT Technology Review - AI](https://www.technologyreview.com/topic/artificial-intelligence/) - 深度 AI 报道
-
-#### 资讯与聚合
-- [Import AI](https://importai.net) - Jack Clark 的每周 AI 通讯
-- [The Rundown AI](https://www.therundown.ai) - 每日 AI 新闻摘要
-- [Ben's Bites](https://bensbites.co) - 每日 AI 产品与研究速览
-- [TLDR AI](https://tldr.tech/ai) - 简明每日 AI 通讯
-
-#### 社区
-- [r/MachineLearning](https://www.reddit.com/r/MachineLearning/) - Reddit 机器学习社区
-- [Hacker News](https://news.ycombinator.com) - 技术社区，AI 讨论活跃
-- [GitHub Trending](https://github.com/trending) - GitHub 热门开源项目
-
-#### 中文信息源
-- [机器之心 Synced](https://www.jiqizhixin.com) - 国内领先的 AI 媒体平台
-- [智源社区 BAAI](https://hub.baai.ac.cn) - 北京智源人工智能研究院社区
-- [量子位 QbitAI](https://www.qbitai.com) - AI 科技媒体
-- [AI科技评论](https://www.leiphone.com/category/ai) - 雷锋网 AI 频道
-
-### 如何贡献
-1. Fork 本仓库。
-2. 按照格式在最新日期下添加条目。
-3. 提交 Pull Request 并说明改动内容。
